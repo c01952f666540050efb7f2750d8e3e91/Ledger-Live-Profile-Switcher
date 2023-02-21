@@ -2,3 +2,6 @@
 __pycache__/
 *.py[cod]
 *$py.class
+
+# My own JSON that I'm writing from
+lib/personal.json
