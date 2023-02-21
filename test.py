@@ -27,7 +27,7 @@ if 'app.json' in file_list:
 
 # Copy app.json into corresponding file
 appjson_copy = "copy_of_app.json"
-dest = shutil.copy(f"{path}\\app.json", f"{path}\\{appjson_copy}")
+dest = shutil.copy(f"{path}\\app.json", f"{path}\\copy_of_app.json")
 
 result_file_list = os.listdir(path)
 print(result_file_list)
