@@ -1,12 +1,17 @@
 # Imports
 import os
 import shutil
+from pprint import pprint
+import json
 
 # Internal Import
 from lib.accounts import accounts
+from lib.writer import inject_appjson, replace_appjson
+
+# We shall use this as the testing file in the future
 
 # We have a specific address we want to inject
-test_address = ""
+test_address = "0x741aa7cfb2c7bf2a1e7d4da2e3df6a56ca4131f3"
 
 # Test print
 test_account = accounts("ethereum", test_address)
@@ -15,21 +20,43 @@ account_json = test_account.test_ret_account()
 # insert the account_json into a test folder
 print("---"*16)
 
-# Get the path
-path = os.getenv('APPDATA')+"\\Ledger Live"
-print(f"Getting path: {path}")
+# insert_data["data"]["accounts"][0]["data"] = 
 
-# Check if app.json exists
-file_list = os.listdir(path)
-print(file_list)
-if 'app.json' in file_list:
-    print("app.json appears!")
+test_dict = {
+    "data": {
+        "settings": {
+            "hasCompletedOnboarding": True
+        },
+        "user": {
+            "id": "_"
+        },
+        "accounts": [
+            {
+                "data": {
+                    "id": "js:2:ethereum:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:",
+                    "seedIdentifier": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+                    "xpub": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+                    "derivationMode": "",
+                    "index": 0,
+                    "freshAddress": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+                    "freshAddressPath": "0'/0'/0'/0/0",
+                    "freshAddresses": [],
+                    "name": "CS ETH",
+                    "starred": True,
+                    "balance": "0",
+                    "blockHeight": 0,
+                    "currencyId": "ethereum",
+                    "operations": [],
+                    "pendingOperations": [],
+                    "swapHistory": [],
+                    "unitMagnitude": 0,
+                    "lastSyncDate": "0"
+                }
+            }
+        ]
+    }
+}
 
-# Copy app.json into corresponding file
-appjson_copy = "copy_of_app.json"
-dest = shutil.copy(f"{path}\\app.json", f"{path}\\copy_of_app.json")
+test_dict['data']['accounts'][0]['data'] = account_json
 
-result_file_list = os.listdir(path)
-print(result_file_list)
-if 'copy_of_app.json' in result_file_list:
-    print("app.json appears!")
+inject_appjson(test_dict)

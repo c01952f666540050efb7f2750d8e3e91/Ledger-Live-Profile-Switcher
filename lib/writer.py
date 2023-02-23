@@ -6,13 +6,20 @@ import shutil
 # Constant
 windows_filepath = os.getenv('APPDATA')+"\\Ledger Live\\"
 
-def write_file(data:dict, path:str, filename: str):
+def write_file(data:dict, filename: str):
     # Take the file
-    with open(f"{path}/{filename}.json", "w") as outfile:
+    with open(f"{windows_filepath}/{filename}", "w") as outfile:
+        json.dump(data, outfile)
 
-        # Write to filepath
-        outfile.write(json.dumps(data))
+def load_json(filename:str):
+    with open(f"{windows_filepath}/{filename}.json") as openfile:
+        return json.load(openfile)
 
+def write_json(data:dict):
+    write_file(
+        data,
+        "app.json"
+    )
 
 def copy_appjson():
     # Copy the file app.json and replace it with copy_of_app.json
@@ -24,3 +31,20 @@ def appjson_exists():
         return True
     else:
         return False
+    
+def inject_appjson(appjson: dict):
+    # If we find the json file
+    if appjson_exists:
+        # backup the app.json
+        copy_appjson()
+
+        # Write json to file
+        write_json(appjson)
+
+        # Test print
+        print("Completed!")
+    else:
+        print("Something went wrong!")
+
+def replace_appjson():
+    shutil.move(f"{windows_filepath}\\copy_of_app.json", f"{windows_filepath}\\app.json")

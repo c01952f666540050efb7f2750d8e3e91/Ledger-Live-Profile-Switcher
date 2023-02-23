@@ -8,25 +8,26 @@ class accounts:
     # Test function to return
     def test_ret_account(self):
         return {
-            "id": f"js:2:{self.address_type}:{self.public_key}:",
-            "seedIdentifier": self.public_key,
-            "xpub": self.public_key,
+            "id": "js:2:ethereum:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:",
+            "seedIdentifier": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+            "xpub": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
             "derivationMode": "",
             "index": 0,
-            "freshAddress": {self.public_key},
+            "freshAddress": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
             "freshAddressPath": "0'/0'/0'/0/0",
             "freshAddresses": [],
-            "name": f"CS {self.address_type}",
+            "name": "CS ETH",
             "starred": True,
             "balance": "0",
             "blockHeight": 0,
-            "currencyId": self.address_type,
+            "currencyId": "ethereum",
             "operations": [],
             "pendingOperations": [],
             "swapHistory": [],
             "unitMagnitude": 0,
             "lastSyncDate": "0"
         }
+
 
 account_types = {
     "bitcoin": None,
