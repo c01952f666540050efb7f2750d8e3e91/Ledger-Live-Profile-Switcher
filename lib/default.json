@@ -9,12 +9,12 @@
         "accounts": [
             {
                 "data": {
-                    "id": "js:2:ethereum:0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045:",
-                    "seedIdentifier": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
-                    "xpub": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+                    "id": "js:2:ethereum:0x4a4374cA885d590FcE52B1C6D7c500B3bAbAedb6:",
+                    "seedIdentifier": "0x4a4374cA885d590FcE52B1C6D7c500B3bAbAedb6",
+                    "xpub": "0x4a4374cA885d590FcE52B1C6D7c500B3bAbAedb6",
                     "derivationMode": "",
                     "index": 0,
-                    "freshAddress": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+                    "freshAddress": "0x4a4374cA885d590FcE52B1C6D7c500B3bAbAedb6",
                     "freshAddressPath": "0'/0'/0'/0/0",
                     "freshAddresses": [],
                     "name": "CS ETH",
