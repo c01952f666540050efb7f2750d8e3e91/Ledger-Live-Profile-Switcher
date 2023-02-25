@@ -21,7 +21,7 @@ class appjson:
 
     def return_accountnumber(self):
         return len(self.file['data']['accounts'])
-
+    
     def return_appjson(self):
         return self.file
 

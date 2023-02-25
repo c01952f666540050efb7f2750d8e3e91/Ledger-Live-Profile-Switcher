@@ -12,23 +12,29 @@ from lib.writer import inject_appjson, replace_appjson
 # We shall use this as the testing file in the future
 
 # We have a specific address we want to inject
-test_address = "0x4a4374cA885d590FcE52B1C6D7c500B3bAbAedb6"
-
-# Test print
-test_account = accounts("ethereum", test_address)
-account_json = test_account.test_ret_account()
-
-# insert the account_json into a test folder
-print("---"*16)
-
-# insert_data["data"]["accounts"][0]["data"] = 
+test_address = "0x777fDB494d0825669Bb50f5B1e075E18e671F8A7"
 test_obj = appjson()
 
-# test_dict['data']['accounts'][0]['data'] = account_json
-inject_data = test_obj.test_ret_appjson(account_json)
-print(inject_data)
+# This creates the account
+test_account = accounts("bsc", test_address)
 
-# print(test_obj)
-inject_appjson(inject_data)
-# Note BSC did not work - will need to check what's going on
-# Maybe I'm just an idiot, i think so tbh
+# We then create the json
+account_json = test_account.ret_account()
+
+# Test print of the account (not full appjson)
+print(account_json)
+print("---"*16)
+
+# Test print appjson
+print(test_obj.return_appjson())
+print("---"*16)
+
+# Add account
+test_obj.add_account(account_json)
+
+# Test Print
+print(test_obj.return_appjson())
+print("---"*16)
+
+# Inject JSON
+inject_appjson(test_obj.return_appjson())
