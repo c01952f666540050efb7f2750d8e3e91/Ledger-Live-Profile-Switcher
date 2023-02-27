@@ -1,9 +1,33 @@
 import json
 
+# Account based assets/networks
+account_types = [
+    'ethereum',
+    'polygon',
+    'cosmos',
+    'tron',
+    'bsc',
+    'polkadot'
+]
+
+# UTXO based assets/networks
+utxo_types = {
+    'bitcoin': [
+        'taproot',
+        'native_segwit',
+        'segwit',
+        'legacy'
+    ]
+}
+
 class accounts:
-    def __init__(self, address_type: str, public_key: str):
+    def __init__(self, address_type: str = "", public_key: str = ""):
         self.address_type = address_type
         self.public_key = public_key
+
+        if address_type not in account_types:
+            # UTXO based account -> update derivation mode
+            pass
         
     def ret_account(self, index:int = 0, freshAddressPath:str = "0'/0'/0'/0/0", derivationMode:str = "", starred:bool = True):
         return {
@@ -28,11 +52,3 @@ class accounts:
                 "lastSyncDate": "0"
             }
         }
-
-
-
-account_types = {
-    "bitcoin": None,
-    "ethereum": None,
-    "bsc": None,
-}
