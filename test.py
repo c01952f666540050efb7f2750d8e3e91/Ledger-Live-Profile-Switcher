@@ -29,6 +29,7 @@ if args.verbose:
     print("Beginnging script in verbose mode.")
 
 # We then ask the user to enter the account types and "public keys" (eg addresses or xpubs) in a loop
+# Note to self - we are trying to create a finite state machine to add these accounts, essentially
 
 # Exit boolean
 continue_loop = True
@@ -47,17 +48,34 @@ while continue_loop:
         print("Exit: (x) / Back: (b)")
 
     # Get address type input
-    typed_input = input("What address type do you want to add? ")
+    print("What address type do you want to add?")
+    typed_input = input()
 
     # Check for exit or back inputs
-    if typed_input == 'b':
+    if typed_input == 'b': # Back input
+        # To input code later
         pass
-    elif typed_input == 'x':
+    elif typed_input == 'x': # Exit input
+        # Raise System Exit
         raise(SystemExit())
 
     # Check address type is supported
     if typed_input in account_types:
-        print(f"Account type blockchain!")
+        print(f"Account type blockchain")
+        print("What is the address to be added?")
+
+        # Get address
+        typed_input_addr = input()
+
+        # Append data into list of added accounts (to update)
+        added_accounts.append(
+            {
+                typed_input: typed_input_addr
+            }
+        )
+
+    
+
 
     
 
