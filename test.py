@@ -7,6 +7,7 @@ from lib.appjson import appjson
 from lib.writer import inject_appjson, replace_appjson
 from lib.printer import printer
 from lib.support import account_types, utxo_types
+from lib.listener import get_acc_data
 
 # We shall use this as the testing file eventually
 # Cobie - Ethereum - 0x676aecc97bf721c3cb3329a22d49c0ea0ed375f7
@@ -59,6 +60,7 @@ args = parser.parse_args()
 if args.verbose:
     print("Beginnging script in verbose mode.")
 
+
 # We then ask the user to enter the account types and "public keys" (eg addresses or xpubs) in a loop
 # Note to self - we are trying to create a finite state machine to add these accounts, essentially
 
@@ -68,24 +70,17 @@ added_accounts = []
 # Begin loop
 while True:
 
+    # Call printer function
     printer(
         {
             'added_accounts': added_accounts
-        }
+        },
+        verbose=args.verbose
     )
-    # If this is the first run
-    if len(added_accounts) == 0:
-        # Print account types:
-        print(account_types)
-    else:
-        print("---"*16)
-        print(f"{added_accounts}")
-        print(f"{account_types}")
-        print("---"*16)
-        print("Exit: (x) / Back: (b) / Complete (c)")
 
     # Get address type input
-    print("What address type do you want to add?")
+    acc_data = get_acc_data()
+    print()
     typed_input = input("> ")
 
     # Check for exit or back inputs
