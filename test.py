@@ -2,11 +2,18 @@
 import argparse
 
 # Internal Import
-from lib.accounts import accounts, account_types
+from lib.accounts import accounts
 from lib.appjson import appjson
 from lib.writer import inject_appjson, replace_appjson
+from lib.printer import printer
+from lib.support import account_types, utxo_types
 
 # We shall use this as the testing file eventually
+# Cobie - Ethereum - 0x676aecc97bf721c3cb3329a22d49c0ea0ed375f7
+# GCR - Ethereum / Polygon / BSC - 0x25599b4c5d678299680c84f904001aa7661d77f7
+# A16Z - Polygon / Ethereum / Moonriver / Optimism - 0x293ed38530005620e4b28600f196a97e1125daac
+# Alameda - Ethereum / Moonbeam / Moonriver / Arbitrum - 0xe5d0ef77aed07c302634dc370537126a2cd26590
+# Wintermute - Ethereum / Optimism / Fantom / Songbird - 0xdbf5e9c5206d0db70a90108bf936da60221dc080
 
 # How should we use this CLI tool
 
@@ -14,11 +21,35 @@ from lib.writer import inject_appjson, replace_appjson
 parser = argparse.ArgumentParser(
     description="Inject addresses into app.json of Ledger Live"
 )
+
+# Address type
+parser.add_argument(
+    "--type",
+    required=False,
+    help="The address type",
+)
+
+# Address / public key
+parser.add_argument(
+    "--address",
+    required=False,
+    help="The address/extended public key you want to add"
+)
+
+# CLI mode argument - to enter multiple addresses
+parser.add_argument(
+    "--cli",
+    required=False,
+    help="Run in CLI mode to add multiple addresses"
+) 
+
+# Verbosity argument
 parser.add_argument(
     "--verbose",
     action="store_true",
-    help="Boolean for verbosity for this tool for testing purposes"
-) # Verbosity
+    help="Boolean for verbosity for this tool for testing purposes",
+    required=False
+)
 
 # We first parse all the arguments for the options that we will have
 # Create argument object
@@ -31,33 +62,41 @@ if args.verbose:
 # We then ask the user to enter the account types and "public keys" (eg addresses or xpubs) in a loop
 # Note to self - we are trying to create a finite state machine to add these accounts, essentially
 
-# Exit boolean
-continue_loop = True
-
 # Added account list
 added_accounts = []
 
 # Begin loop
-while continue_loop:
+while True:
 
+    printer(
+        {
+            'added_accounts': added_accounts
+        }
+    )
     # If this is the first run
     if len(added_accounts) == 0:
         # Print account types:
         print(account_types)
     else:
-        print("Exit: (x) / Back: (b)")
+        print("---"*16)
+        print(f"{added_accounts}")
+        print(f"{account_types}")
+        print("---"*16)
+        print("Exit: (x) / Back: (b) / Complete (c)")
 
     # Get address type input
     print("What address type do you want to add?")
-    typed_input = input()
+    typed_input = input("> ")
 
     # Check for exit or back inputs
     if typed_input == 'b': # Back input
         # To input code later
         pass
-    elif typed_input == 'x': # Exit input
+    elif typed_input == 'x': # Exit program
         # Raise System Exit
         raise(SystemExit())
+    elif typed_input == 'c': # Complete
+        break
 
     # Check address type is supported
     if typed_input in account_types:
@@ -67,6 +106,10 @@ while continue_loop:
         # Get address
         typed_input_addr = input()
 
+        # Test print
+        print(f"Adding...")
+        print(f"{typed_input} // {typed_input_addr}")
+
         # Append data into list of added accounts (to update)
         added_accounts.append(
             {
@@ -74,9 +117,8 @@ while continue_loop:
             }
         )
 
-    
-
-
+for account in added_accounts:
+    print(account)
     
 
 exit()
