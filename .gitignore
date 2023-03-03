@@ -5,3 +5,9 @@ __pycache__/
 
 # My own JSON that I'm writing from
 lib/personal.json
+
+# Pyinstaller files
+build/*
+dist/*
+*.manifest
+*.spec

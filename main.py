@@ -2,9 +2,10 @@
 
 
 # Internal Import
-from lib.accounts import accounts, account_types
+from lib.accounts import accounts
 from lib.appjson import appjson
 from lib.writer import inject_appjson, replace_appjson
+from lib.support import account_types
 
 # # We have a specific address we want to inject
 # test_address = "0x7BAf0fC50fa41E35365FB5B45D3d133EF41B9c77"
@@ -15,11 +16,11 @@ from lib.writer import inject_appjson, replace_appjson
 
 # # insert the account_json into a test folder
 # We have a specific address we want to inject
-test_address = "0xbBEFA5eE210719D21AEAc41B0722C19624d32A5B"
+test_address = "0x17d4b6e3ef4f7c9091b7296efea34648b6b2bf33"
 test_obj = appjson()
 
 # This creates the account
-test_account = accounts("zcash", test_address)
+test_account = accounts("bsc", test_address)
 
 # We then create the json
 account_json = test_account.ret_account()

@@ -68,7 +68,7 @@ def get_acc_data(verbose:bool=True) -> list:
             "What is the address?",
             verbose=verbose
         )
-
+        
         ret_data.append({input_addr_type,input_addr})
 
     
