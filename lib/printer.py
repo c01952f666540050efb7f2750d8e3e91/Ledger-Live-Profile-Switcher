@@ -5,7 +5,7 @@ import os
 from lib.support import account_types, utxo_types
 
 # Main printing function
-def printer(input_data:dict, verbose:bool=True):
+def printer(input_data:dict, verbose:bool=True, comp_stage:bool=False):
     # Windows Clear
     os.system("cls")
 
@@ -15,7 +15,7 @@ def printer(input_data:dict, verbose:bool=True):
         # If we have some accounts added
         if len(input_data['added_accounts']) > 0:
             # Print added accounts
-            print("All the added accounts: ")
+            print("Added accounts: ")
             print(input_data['added_accounts'])
             print("---"*32)
 
@@ -23,8 +23,11 @@ def printer(input_data:dict, verbose:bool=True):
         print("---"*32) # Initial Split
     
     # Print account types
-    print("Account types:")
+    print("Possible Account Types:")
     print(account_types)
     print(utxo_types)
     print("---"*32) # Final Split
-    print("Exit: (x) / Back: (b) / Complete (c)")
+
+    # Only list this when needed
+    if comp_stage:
+        print("Exit: (x) / Back: (b) / Complete (c)")

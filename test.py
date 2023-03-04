@@ -6,7 +6,7 @@ from lib.accounts import accounts
 from lib.appjson import appjson
 from lib.writer import inject_appjson, replace_appjson
 from lib.printer import printer
-from lib.support import account_types, utxo_types
+from lib.support import account_types
 from lib.listener import get_acc_data
 
 # We shall use this as the testing file eventually
