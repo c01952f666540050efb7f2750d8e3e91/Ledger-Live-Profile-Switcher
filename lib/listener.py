@@ -88,12 +88,13 @@ def get_acc_data(verbose:bool=True) -> list:
     cont_loop = True
 
     while cont_loop:
-        printer(
-            {
-                'added_accounts': ret_data
-            },
-            verbose=verbose
-        )
+        if verbose:
+            printer(
+                {
+                    'added_accounts': ret_data
+                },
+                verbose=verbose
+            )
 
         # Get address type
         addr_type = ask_loop(
