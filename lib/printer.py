@@ -5,7 +5,7 @@ import os
 from lib.support import account_types, utxo_types
 
 # Main printing function
-def printer(input_data:dict, verbose:bool=True, comp_stage:bool=False):
+def printer(input_data:dict, verbose:bool=True):
     # Windows Clear
     os.system("cls")
 
@@ -27,7 +27,3 @@ def printer(input_data:dict, verbose:bool=True, comp_stage:bool=False):
     print(account_types)
     print(utxo_types)
     print("---"*32) # Final Split
-
-    # Only list this when needed
-    if comp_stage:
-        print("Exit: (x) / Back: (b) / Complete (c)")

@@ -2,6 +2,7 @@
 
 # Local Imports
 from lib.support import account_types, utxo_types
+from lib.printer import printer
 
 def validate_addr_type(input_type):
     if input_type in account_types or input_type in utxo_types.keys():
@@ -43,20 +44,15 @@ def ask(variable:str="", question:str="", verbose:bool=True) -> str:
         # wait for answer with minimal data
         ret_data = input(f"{variable}> ")
 
-    # # If we get an "x"
-    # if ret_data == "x":
-
-    #     # Panic exit
-    #     raise(SystemExit())
-    
-    # Return data
     return ret_data
 
 def command_check(command:str):
-    pass
-
-def process_command(comamand:str):
-    pass
+    if command == "x":
+        raise(SystemExit())
+    elif command == "c":
+        return False
+    elif command == "m":
+        return True
 
 
 def valid_addr_type(address_type:str, verbose:bool=True) -> bool:
@@ -66,31 +62,40 @@ def valid_addr_type(address_type:str, verbose:bool=True) -> bool:
         if verbose:
             print("Invalid address type!")
         return False
-    
-def valid_addr(address:str) -> bool:
+
+def valid_addr(address:str, verbose:bool=True) -> bool:
     # Currently passes all strings as valid
     return True
     
 def ask_loop(validate_func, variable:str="", question:str="", verbose:bool=True) -> str:
     # Get address type
     while True:
-        input_addr_type = ask(
+        input_str = ask(
             variable,
             question,
             verbose=verbose
         )
 
-        # If the address is valid
-        if validate_func(input_addr_type, verbose):
-            # Vald address -> continue to next step
+        # If the input is valid
+        if validate_func(input_str, verbose=verbose):
+            #Continue to next step
             break
     
-    return input_addr_type
+    return input_str
 
 def get_acc_data(verbose:bool=True) -> list:
     ret_data = []
+    cont_loop = True
 
-    while True:
+    while cont_loop:
+        printer(
+            {
+                'added_accounts': ret_data
+            },
+            verbose=verbose
+        )
+
+        # Get address type
         addr_type = ask_loop(
             valid_addr_type,
             "address_type",
@@ -98,15 +103,31 @@ def get_acc_data(verbose:bool=True) -> list:
             verbose=verbose
         )
 
+        # Do validation loop
         addr = ask_loop(
             valid_addr,
             "address",
             f"What {addr_type} address do you want to add?",
             verbose=verbose
         )
-        
 
 
-        ret_data.append({input_addr_type,input_addr})
+        # Add to list
+        ret_data.append(
+            {
+                'acc_type': addr_type,
+                'address': addr
+            }
+        )
+
+        cont_loop = command_check(
+            ask(
+                "",
+                "More Accounts (m) / Exit: (x) / Complete (c)",
+                True
+            ).lower()
+        )
+
+    return ret_data
 
     

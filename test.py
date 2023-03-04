@@ -113,7 +113,7 @@ while True:
         )
 
 for account in added_accounts:
-    print(account)
+    
     
 
 exit()

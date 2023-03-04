@@ -16,69 +16,18 @@ from lib.listener import get_acc_data
 # How should we use this CLI tool
 
 
-# Added account list
-added_accounts = []
-
-# Call printer function
-printer(
-    {
-        'added_accounts': added_accounts
-    },
-    verbose=True,
-    comp_stage=False
-)
-
 # Ask loop
 acc_data = get_acc_data()
+# print(acc_data)
 
-# # Begin loop
-# while True:
+inject_json = appjson()
 
-#     # Call printer function
-#     printer(
-#         {
-#             'added_accounts': added_accounts
-#         },
-#         verbose=True
-#     )
+for account in acc_data:
+    acc = accounts(account['acc_type'], account['address']).ret_account()
+    # print(acc)
 
-#     # Get address type input
-#     acc_data = get_acc_data()
-#     print()
-#     typed_input = input("> ")
+    inject_json.add_account(acc)
 
-#     # Check for exit or back inputs
-#     if typed_input == 'b': # Back input
-#         # To input code later
-#         pass
-#     elif typed_input == 'x': # Exit program
-#         # Raise System Exit
-#         raise(SystemExit())
-#     elif typed_input == 'c': # Complete
-#         break
+# print(inject_json.return_appjson())
 
-#     # Check address type is supported
-#     if typed_input in account_types:
-#         print(f"Account type blockchain")
-#         print("What is the address to be added?")
-
-#         # Get address
-#         typed_input_addr = input()
-
-#         # Test print
-#         print(f"Adding...")
-#         print(f"{typed_input} // {typed_input_addr}")
-
-#         # Append data into list of added accounts (to update)
-#         added_accounts.append(
-#             {
-#                 typed_input: typed_input_addr
-#             }
-#         )
-
-# for account in added_accounts:
-#     print(account)
-    
-
-# exit()
-
+inject_appjson(inject_json.return_appjson())
