@@ -1,5 +1,3 @@
-# Imports
-
 # Local Imports
 from lib.support import account_types, utxo_types
 from lib.printer import printer
@@ -56,7 +54,7 @@ def command_check(command:str):
 
 
 def valid_addr_type(address_type:str, verbose:bool=True) -> bool:
-    if address_type in account_types or address_type in utxo_types:
+    if address_type in account_types or address_type in utxo_types.keys():
         return True
     else:
         if verbose:
@@ -66,8 +64,24 @@ def valid_addr_type(address_type:str, verbose:bool=True) -> bool:
 def valid_addr(address:str, verbose:bool=True) -> bool:
     # Currently passes all strings as valid
     return True
-    
+
+def valid_utxo(utxo_type:str, acc_type:str, verbose:bool=True) -> bool:
+    if utxo_type in utxo_types[acc_type]:
+        return True
+    else:
+        if verbose:
+            print("Invalid account type!")
+        return False
+
+
 def ask_loop(validate_func, variable:str="", question:str="", verbose:bool=True) -> str:
+    acc_type = ""
+    # For UTXO based accs
+    if " " in variable:
+        variable = variable.split(" ")
+        acc_type = variable[0]
+        variable = variable[1]
+
     # Get address type
     while True:
         input_str = ask(
@@ -76,10 +90,19 @@ def ask_loop(validate_func, variable:str="", question:str="", verbose:bool=True)
             verbose=verbose
         )
 
-        # If the input is valid
-        if validate_func(input_str, verbose=verbose):
-            #Continue to next step
-            break
+        # For UTXO type
+        if len(acc_type) > 0:
+            
+            # if input is valid (UTXO type)
+            if validate_func(input_str, acc_type, verbose=verbose):
+                break
+        
+        # For account based chains
+        else:
+            # If the input is valid
+            if validate_func(input_str, verbose=verbose):
+                #Continue to next step
+                break
     
     return input_str
 
@@ -104,20 +127,40 @@ def get_acc_data(verbose:bool=True) -> list:
             verbose=verbose
         )
 
-        # Do validation loop
-        addr = ask_loop(
-            valid_addr,
-            "address",
-            f"What {addr_type} address do you want to add?",
-            verbose=verbose
-        )
+        # Make sure to get UTXO type
+        if addr_type in utxo_types.keys():
+            utxo_ver = ask_loop(
+                valid_utxo,
+                f"{addr_type} account_type",
+                "What account type?",
+                verbose=verbose
+            )
+
+            # Get address / xpub
+            addr = ask_loop(
+                valid_addr,
+                f"xpub",
+                f"What {addr_type} {utxo_ver} address do you want to add?",
+                verbose=verbose
+            )
+
+        else:
+            utxo_ver = ""
+            # Get address / xpub
+            addr = ask_loop(
+                valid_addr,
+                f"address",
+                f"What {addr_type} address do you want to add?",
+                verbose=verbose
+            )
 
 
         # Add to list
         ret_data.append(
             {
                 'acc_type': addr_type,
-                'address': addr
+                'address': addr,
+                'utxo_type': utxo_ver
             }
         )
 

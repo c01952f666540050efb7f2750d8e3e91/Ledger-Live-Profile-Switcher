@@ -23,7 +23,7 @@ def printer(input_data:dict, verbose:bool=True):
         print("---"*32) # Initial Split
     
     # Print account types
-    print("Possible Account Types:")
+    print("Possible Account Types: (Some may be untested!)")
     print(account_types)
     print(utxo_types)
     print("---"*32) # Final Split

@@ -112,12 +112,6 @@ while True:
             }
         )
 
-for account in added_accounts:
-    
-    
-
-exit()
-
 
 
 

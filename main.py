@@ -16,7 +16,15 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
     "--verbose",
     action="store_true",
-    help="Boolean for verbosity for this tool for testing purposes",
+    help="Boolean for verbosity for this tool.",
+    required=False
+)
+
+# Test mode - to print json
+parser.add_argument(
+    "--test",
+    action="store_true",
+    help="Boolean to not write and only print final output for testing purposes",
     required=False
 )
 
@@ -36,10 +44,15 @@ acc_data = get_acc_data(verbose=verbosity)
 # For each account
 for account in acc_data:
     # Create account dict
-    acc = accounts(account['acc_type'], account['address']).ret_account()
+    acc = accounts(account['acc_type'], account['address']).ret_account(
+        derivationMode=account['utxo_type']
+    )
 
     # Add to app.json
     json_obj.add_account(acc)
 
 # Injet appjson
-inject_appjson(json_obj.return_appjson())
+if args.test:
+    print(json_obj.return_appjson())
+else:    
+    inject_appjson(json_obj.return_appjson())
