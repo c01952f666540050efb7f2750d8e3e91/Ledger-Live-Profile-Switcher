@@ -1,44 +1,45 @@
 # Imports
-
+import argparse
 
 # Internal Import
 from lib.accounts import accounts
 from lib.appjson import appjson
-from lib.writer import inject_appjson, replace_appjson
-from lib.support import account_types
+from lib.writer import inject_appjson
+from lib.listener import get_acc_data
 
-# # We have a specific address we want to inject
-# test_address = "0x7BAf0fC50fa41E35365FB5B45D3d133EF41B9c77"
+# Create parser object
+parser = argparse.ArgumentParser(
+    description="Inject addresses into app.json of Ledger Live"
+)
 
-# # Test print
-# test_account = accounts("ethereum", test_address)
-# account_json = test_account.test_ret_account()
+# Verbosity
+parser.add_argument(
+    "--verbose",
+    action="store_true",
+    help="Boolean for verbosity for this tool for testing purposes",
+    required=False
+)
 
-# # insert the account_json into a test folder
-# We have a specific address we want to inject
-test_address = "0x17d4b6e3ef4f7c9091b7296efea34648b6b2bf33"
-test_obj = appjson()
+# Argument object
+args = parser.parse_args()
+verbosity = False
+if args.verbose:
+    verbosity = True
 
-# This creates the account
-test_account = accounts("bsc", test_address)
 
-# We then create the json
-account_json = test_account.ret_account()
+# How should we use this CLI tool
+json_obj = appjson()
 
-# Test print of the account (not full appjson)
-print(account_json)
-print("---"*16)
+# Get account data
+acc_data = get_acc_data(verbose=verbosity)
 
-# Test print appjson
-print(test_obj.return_appjson())
-print("---"*16)
+# For each account
+for account in acc_data:
+    # Create account dict
+    acc = accounts(account['acc_type'], account['address']).ret_account()
 
-# Add account
-test_obj.add_account(account_json)
+    # Add to app.json
+    json_obj.add_account(acc)
 
-# Test Print
-print(test_obj.return_appjson())
-print("---"*16)
-
-# Inject JSON
-inject_appjson(test_obj.return_appjson())
+# Injet appjson
+inject_appjson(json_obj.return_appjson())

@@ -1,9 +1,7 @@
 # Internal Import
 from lib.accounts import accounts
 from lib.appjson import appjson
-from lib.writer import inject_appjson, replace_appjson
-from lib.printer import printer
-from lib.support import account_types
+from lib.writer import inject_appjson
 from lib.listener import get_acc_data
 
 # We shall use this as the testing file eventually
@@ -14,20 +12,18 @@ from lib.listener import get_acc_data
 # Wintermute - Ethereum / Optimism / Fantom / Songbird - 0xdbf5e9c5206d0db70a90108bf936da60221dc080
 
 # How should we use this CLI tool
-
+json_obj = appjson()
 
 # Ask loop
 acc_data = get_acc_data()
 # print(acc_data)
 
-inject_json = appjson()
-
 for account in acc_data:
     acc = accounts(account['acc_type'], account['address']).ret_account()
     # print(acc)
 
-    inject_json.add_account(acc)
+    json_obj.add_account(acc)
 
 # print(inject_json.return_appjson())
 
-inject_appjson(inject_json.return_appjson())
+inject_appjson(json_obj.return_appjson())
