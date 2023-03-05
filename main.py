@@ -4,7 +4,7 @@ import argparse
 # Internal Import
 from lib.accounts import accounts
 from lib.appjson import appjson
-from lib.writer import inject_appjson
+from lib.writer import inject_appjson, restore_appjson
 from lib.listener import get_acc_data
 
 # Create parser object
@@ -24,7 +24,14 @@ parser.add_argument(
 parser.add_argument(
     "--test",
     action="store_true",
-    help="Boolean to not write and only print final output for testing purposes",
+    help="Flag to not write and only print final output for testing purposes",
+    required=False
+)
+
+parser.add_argument(
+    "--restore",
+    action="store_true",
+    help="Flag to restore files back to appjson you were using before.",
     required=False
 )
 
@@ -34,25 +41,28 @@ verbosity = False
 if args.verbose:
     verbosity = True
 
+# If we're restoring from copy_of_app.json
+if args.restore:
+    restore_appjson()
+else:
+    # How should we use this CLI tool
+    json_obj = appjson()
 
-# How should we use this CLI tool
-json_obj = appjson()
+    # Get account data
+    acc_data = get_acc_data(verbose=verbosity)
 
-# Get account data
-acc_data = get_acc_data(verbose=verbosity)
+    # For each account
+    for account in acc_data:
+        # Create account dict
+        acc = accounts(account['acc_type'], account['address']).ret_account(
+            derivationMode=account['utxo_type']
+        )
 
-# For each account
-for account in acc_data:
-    # Create account dict
-    acc = accounts(account['acc_type'], account['address']).ret_account(
-        derivationMode=account['utxo_type']
-    )
+        # Add to app.json
+        json_obj.add_account(acc)
 
-    # Add to app.json
-    json_obj.add_account(acc)
-
-# Injet appjson
-if args.test:
-    print(json_obj.return_appjson())
-else:    
-    inject_appjson(json_obj.return_appjson())
+    # Injet appjson
+    if args.test:
+        print(json_obj.return_appjson())
+    else:    
+        inject_appjson(json_obj.return_appjson())

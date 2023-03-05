@@ -32,6 +32,13 @@ def appjson_exists():
     else:
         return False
     
+def appjson_copy_exists():
+    file_list = os.listdir(f"{windows_filepath}")
+    if "copy_of_app.json" in file_list:
+        return True
+    else:
+        return False
+    
 def inject_appjson(appjson: dict):
     # If we find the json file
     if appjson_exists:
@@ -48,3 +55,7 @@ def inject_appjson(appjson: dict):
 
 def replace_appjson():
     shutil.move(f"{windows_filepath}\\copy_of_app.json", f"{windows_filepath}\\app.json")
+
+def restore_appjson():
+    if appjson_copy_exists:
+        shutil.copy(f"{windows_filepath}\\copy_of_app.json", f"{windows_filepath}\\app.json")
